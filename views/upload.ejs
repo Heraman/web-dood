@@ -1,0 +1,76 @@
+<%- include('partials/header', { query: '' }) %>
+
+<h1>Upload (Clone) Video dari URL Doodstream</h1>
+
+<% if (error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+<% } %>
+
+<% if (results) { %>
+    <div class="alert alert-info">
+        <h4>Hasil Upload:</h4>
+        <ul>
+            <% results.forEach(result => { %>
+                <li>
+                    <strong>URL Asal:</strong> <%= result.url %><br>
+                    <strong>Status:</strong> <span class="<%= result.status === 'Success' ? 'text-success' : 'text-danger' %>"><%= result.status %></span><br>
+                    <strong>Pesan:</strong> <%= result.message %><br>
+                    <% if (result.status === 'Success') { %>
+                        <strong>File Code Baru:</strong> <%= result.newFileCode %><br>
+                        <strong>Link Nonton:</strong> <a href="<%= result.embedUrl %>" target="_blank"><%= result.embedUrl %></a><br>
+                        <strong>Link Download:</strong> <a href="<%= result.downloadUrl %>" target="_blank"><%= result.downloadUrl %></a>
+                    <% } %>
+                     <hr>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+<% } %>
+
+<form action="/video/upload/process" method="POST" class="needs-validation" novalidate>
+     <div class="mb-3">
+         <label for="uploadType" class="form-label">Tipe Upload:</label>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="uploadType" id="singleUpload" value="single" checked>
+             <label class="form-check-label" for="singleUpload">
+                 Single URL
+             </label>
+         </div>
+         <div class="form-check">
+             <input class="form-check-input" type="radio" name="uploadType" id="bulkUpload" value="bulk">
+             <label class="form-check-label" for="bulkUpload">
+                 Bulk URL (Setiap URL di baris baru)
+             </label>
+         </div>
+     </div>
+
+    <div class="mb-3">
+        <label for="urls" class="form-label">URL Doodstream:</label>
+        <textarea class="form-control" id="urls" name="urls" rows="5" placeholder="Masukkan satu atau lebih URL Doodstream (format: https://do.../e/xxxx atau /d/xxxx)" required></textarea>
+         <div class="invalid-feedback">
+             URL tidak boleh kosong.
+         </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Upload (Clone)</button>
+</form>
+
+ <script>
+     (function () {
+       'use strict'
+       var forms = document.querySelectorAll('.needs-validation')
+       Array.prototype.slice.call(forms)
+         .forEach(function (form) {
+           form.addEventListener('submit', function (event) {
+             if (!form.checkValidity()) {
+               event.preventDefault()
+               event.stopPropagation()
+             }
+             form.classList.add('was-validated')
+           }, false)
+         })
+     })()
+ </script>
+
+
+<%- include('partials/footer') %>

@@ -1,0 +1,24 @@
+<%- include('partials/header', { query: query }) %> <h1>Hasil Pencarian untuk "<%= query %>"</h1>
+ <p><%= totalItems %> video ditemukan.</p>
+
+<% if (results && results.length > 0) { %>
+    <div class="video-grid mb-4">
+        <% results.forEach(video => { %>
+             <a href="<%= video.player_url %>" class="video-card">
+                 <img src="<%= video.splash_img || video.single_img || 'https://via.placeholder.com/300x150.png?text=No+Thumbnail' %>" alt="<%= video.title %>" loading="lazy">
+                <div class="card-body">
+                    <h5 class="card-title" title="<%= video.title %>"><%= video.title %></h5>
+                     <p class="card-text"><small>Views: <%= video.views %></small></p>
+                </div>
+            </a>
+        <% }); %>
+    </div>
+
+    <%- include('partials/pagination', { currentPage, totalPages, hasNextPage, hasPrevPage, paginationBaseUrl: paginationBaseUrl }) %>
+
+<% } else { %>
+    <p class="alert alert-info">Tidak ada video yang cocok dengan pencarian Anda.</p>
+<% } %>
+
+
+<%- include('partials/footer') %>

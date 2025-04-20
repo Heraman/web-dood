@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<% if (errorMessage) { %>
+     <div class="alert alert-warning" role="alert">
+          <%= errorMessage %>
+     </div>
+<% } %>
+
+
+<% if (latestVideos && latestVideos.length > 0) { %>
+<section class="mb-5">
+    <h2>Video Terbaru</h2>
+    <div class="video-grid">
+        <% latestVideos.forEach(video => { %>
+            <a href="<%= video.player_url %>" class="video-card">
+                 <img src="<%= video.splash_img || video.single_img || 'https://via.placeholder.com/300x150.png?text=No+Thumbnail' %>" alt="<%= video.title %>" loading="lazy">
+                <div class="card-body">
+                    <h5 class="card-title" title="<%= video.title %>"><%= video.title %></h5>
+                     <p class="card-text"><small>Uploaded: <%= new Date(video.uploaded).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' }) %></small></p>
+                </div>
+            </a>
+        <% }); %>
+    </div>
+</section>
+<% } %>
+
+
+<% if (mostViewedVideos && mostViewedVideos.length > 0) { %>
+<section>
+    <h2>Paling Banyak Ditonton</h2>
+    <div class="video-grid">
+        <% mostViewedVideos.forEach(video => { %>
+             <a href="<%= video.player_url %>" class="video-card">
+                 <img src="<%= video.splash_img || video.single_img || 'https://via.placeholder.com/300x150.png?text=No+Thumbnail' %>" alt="<%= video.title %>" loading="lazy">
+                <div class="card-body">
+                    <h5 class="card-title" title="<%= video.title %>"><%= video.title %></h5>
+                     <p class="card-text"><small>Views: <%= video.views %></small></p>
+                </div>
+            </a>
+        <% }); %>
+    </div>
+</section>
+<% } %>
+
+<%- include('partials/footer') %>
